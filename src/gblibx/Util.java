@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
@@ -312,5 +313,14 @@ public class Util {
             }
         };
         Files.walkFileTree(path, visitor);
+    }
+
+    public static String unique(String s, String splitRex, String join) {
+        List<String> opts = new ArrayList<>(Arrays.asList(s.split(splitRex)));
+        String uniq = opts
+                .stream()
+                .distinct()
+                .collect(Collectors.joining(join));
+        return uniq;
     }
 }

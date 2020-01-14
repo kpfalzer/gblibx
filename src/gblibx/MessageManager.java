@@ -53,6 +53,10 @@ public abstract class MessageManager {
         MultiLogger.fatal(__getMessage(key, args));
     }
 
+    public static void message(String key, Object... args) {
+        MultiLogger.message(__getMessage(key, args));
+    }
+
     private static String __getMessage(String key, Object... args) {
         String format = expectNonNull(__MESSAGES.get(key));
         return String.format("%s  (%s)", String.format(format, args), key);

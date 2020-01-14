@@ -51,6 +51,10 @@ public class MultiLogger extends Logger {
         return __theOne._fatal(message);
     }
 
+    public static Logger message(String message) {
+        return __theOne._message(message);
+    }
+
     private final ConsoleLogger __clogger;
     private FileLogger __flogger;
     private static MultiLogger __theOne = null;

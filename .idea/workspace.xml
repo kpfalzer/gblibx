@@ -6,7 +6,14 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="" />
+    <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/ConsoleLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/ConsoleLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Logger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/MessageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/MessageManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Util.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +26,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1TcLpLCxO3As4fPjfLL8mZ83XYX" />
   <component name="PropertiesComponent">
@@ -39,6 +49,9 @@
       </list>
     </option>
   </component>
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value=",ALPHA_COMPARATOR" />
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -51,5 +64,18 @@
       <updated>1573754618231</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -29,7 +29,8 @@ public class ConsoleLogger implements Logger.Print {
             case eDebug:
                 color = ConsoleColors.BLUE;
                 break;
-            case eInfo:
+            case eInfo: //fall through
+            case eMessage:
                 break;
             case eWarning:
                 color = ConsoleColors.YELLOW;

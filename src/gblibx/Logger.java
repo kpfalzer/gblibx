@@ -16,7 +16,9 @@ public abstract class Logger {
         eInfo('I'),
         eWarning('W'),
         eError('E'),
-        eFatal('F');
+        eFatal('F'),
+        eMessage('M')   //always
+        ;
 
         ELevel(char abbrev) {
             this.abbrev = abbrev;
@@ -49,6 +51,9 @@ public abstract class Logger {
                 break;
             case 'F':
                 setLevel(ELevel.eFatal);
+                break;
+            case 'M':
+                setLevel(ELevel.eMessage);
                 break;
             default:
                 expectNever();
@@ -103,6 +108,10 @@ public abstract class Logger {
 
     protected Logger _fatal(String message) {
         return print(ELevel.eFatal, message);
+    }
+
+    protected Logger _message(String message) {
+        return print(ELevel.eMessage, message);
     }
 
     public long getMessageCount(ELevel svr) {
