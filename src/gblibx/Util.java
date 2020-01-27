@@ -23,6 +23,15 @@ import java.util.stream.Stream;
 import static java.util.Objects.isNull;
 
 public class Util {
+    public static String repeat(String s, int rep) {
+        //note: there is String.repeat() in java11
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < rep; ++i) {
+            buf.append(s);
+        }
+        return buf.toString();
+    }
+
     public static String readFile(String fname) throws IOException {
         return new String(Files.readAllBytes(Paths.get(fname)));
     }

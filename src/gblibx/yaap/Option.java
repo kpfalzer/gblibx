@@ -28,12 +28,17 @@
 package gblibx.yaap;
 
 import gblibx.Util;
+import sun.jvm.hotspot.asm.sparc.SPARCArgument;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-import static gblibx.Util.*;
+import static gblibx.Util.Pair;
+import static gblibx.Util.invariant;
+import static gblibx.Util.isNonNull;
+import static gblibx.Util.join;
+import static gblibx.Util.toArrayOfT;
 import static java.util.Objects.isNull;
 
 /**
@@ -239,6 +244,38 @@ public class Option {
             if (isRepeated()) usage.append("...");
         }
         return usage.toString();
+    }
+
+    /**
+     * Get prefix "--option argNm" lead to detailed usage.
+     * Useful to determine optimal indentation.
+     *
+     * @return prefix "--option argNm'
+     */
+    public String getDetailedArgs() {
+        StringBuilder buf = new StringBuilder();
+        buf.append(prOptNm());
+        if (isNonNull(argNm)) {
+            buf.append(' ').append(argNm);
+        }
+        return buf.toString();
+    }
+
+    /**
+     * Detailed usage.
+     *
+     * @param justify column where description should start.
+     *
+     * @return Detailed usage
+     */
+    public String getDetailedUsage(int justify) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(getDetailedArgs());
+        int padding = justify - buf.length();
+        if (padding < 2) padding = 2;
+        buf.append(Util.repeat(" ", padding));
+        buf.append(description);
+        return buf.toString();
     }
 
     /**

@@ -30,6 +30,7 @@ package gblibx.yaap;
 import java.util.*;
 
 import static gblibx.Util.invariant;
+import static gblibx.Util.repeat;
 
 /**
  * Group of Option.
@@ -89,6 +90,30 @@ public class Group {
             usage.append(__opts.get(key).toString());
         }
         return usage.toString();
+    }
+
+    /**
+     * Get detailed usage.
+     *
+     * @return detailed usage.
+     */
+    public String getDetailedUsage() {
+        StringBuilder buf = new StringBuilder();
+        String under = repeat("-", description.length());
+        buf.append(description).append("\n").append(under).append("\n");
+        int maxWidth = 0;
+        for (int pass = 1; pass <= 2; ++pass) {
+            for (String key : __opts.keySet()) {
+                if (1 == pass) {
+                    int w = __opts.get(key).getDetailedArgs().length();
+                    if (w > maxWidth) maxWidth = w;
+                } else {
+                    buf.append(__opts.get(key).getDetailedUsage(maxWidth)).append("\n");
+                }
+            }
+            if (1 == pass) maxWidth += 2;
+        }
+        return buf.toString();
     }
 
     public boolean containsKey(String optNm) {

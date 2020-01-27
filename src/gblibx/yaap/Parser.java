@@ -27,7 +27,11 @@
 
 package gblibx.yaap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Vector;
 
 import static gblibx.Util.*;
 import static java.util.Objects.isNull;
@@ -56,11 +60,29 @@ public class Parser {
         throw new Error(bad);
     }
 
+    private static final String[] __HELP = {"-h", "--help"};
+
+    private void __doHelp() {
+        System.err.println(getDetailedUsage());
+        System.exit(1);
+    }
+
+    private void __doShortUsage() {
+        System.err.println(getShortUsage());
+        System.exit(1);
+    }
+
     public boolean parse(String[] argv) {
+        return parse(argv, true);
+    }
+
+    public boolean parse(String[] argv, boolean needAtLeastOneArg) {
+        if (needAtLeastOneArg && (1 > argv.length)) __doShortUsage();
         __args = new Vector<>(Arrays.asList(argv));
         while (!__args.isEmpty()) {
             String arg = __args.firstElement();
             if (arg.startsWith("-")) {
+                if (contains(__HELP, arg)) __doHelp();
                 Option option = null;
                 for (Group g : __groups) {
                     option = g.find(arg);
@@ -82,7 +104,7 @@ public class Parser {
                 } else {
                     option.setBinaryOpt();
                 }
-             } else {
+            } else {
                 break; //while
             }
         }
@@ -113,20 +135,38 @@ public class Parser {
         return __didOpts.keySet();
     }
 
+    public String getShortUsage() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("Usage: ").append(progName).append(" [-h|--help]");
+        for (Group g : __groups) {
+            buf.append(' ').append(g.toString());
+        }
+        buf.append("\n");
+        return buf.toString();
+    }
+
+    public String getDetailedUsage() {
+        StringBuilder buf = new StringBuilder(getShortUsage());
+        for (Group g : __groups) {
+            buf.append("\n").append(g.getDetailedUsage());
+        }
+        return buf.toString();
+    }
+
     private void __checkAllRequired() {
         for (Group g : __groups) {
             for (Option option : g.allOptions()) {
-                if (! option.isRequiredMet()) {
+                if (!option.isRequiredMet()) {
                     __error(option.prOptNm() + ": option required");
                 }
                 //add it to done, if not already
                 String k = option.optNm();
-                if (! hasKey(k)) __didOpts.put(k, option);
+                if (!hasKey(k)) __didOpts.put(k, option);
             }
         }
     }
 
-    private Vector<String>  __args = null;
+    private Vector<String> __args = null;
     private HashMap<String, Option> __didOpts = new HashMap<>();
 
     public boolean hasPosArgs() {
@@ -159,10 +199,10 @@ public class Parser {
 
     public Group add(Group group) {
         __groups.add(group);
-        return __groups.get(__groups.size()-1);
+        return __groups.get(__groups.size() - 1);
     }
 
-     public final String progName;
+    public final String progName;
 
     private ArrayList<Group> __groups = new ArrayList<>();
     private ArrayList<String> __posArgs = new ArrayList<>();
