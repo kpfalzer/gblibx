@@ -181,6 +181,10 @@ public class Util {
         return from.stream().filter(ele -> 0 <= Arrays.binarySearch(lookHere, ele));
     }
 
+    public static <T> boolean contains(T[] set, T item) {
+        return Arrays.asList(set).contains(item);
+    }
+
     public static <T> boolean containsAny(T[] lookHere, Collection<T> from) {
         return from.stream().map(ele -> {
             return 0 <= Arrays.binarySearch(lookHere, ele);

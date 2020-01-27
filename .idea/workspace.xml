@@ -7,11 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/gblibx/yaap/Group.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gblibx/yaap/Option.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gblibx/yaap/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/ConsoleLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/ConsoleLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Logger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/MessageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/MessageManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/argparse4j-0.8.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/ArgParse.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gblibx/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Util.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,6 +32,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1TcLpLCxO3As4fPjfLL8mZ83XYX" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
