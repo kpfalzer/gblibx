@@ -6,13 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/yaap/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/yaap/Group.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/yaap/Option.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/yaap/Option.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/yaap/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/yaap/Parser.java" afterDir="false" />
-    </list>
+    <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
