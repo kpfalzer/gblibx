@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static gblibx.Util.expectNull;
@@ -32,14 +34,16 @@ public class RunCmd implements Runnable {
         __cerr = cerr;
     }
 
-    public void setCout(Consumer<String> cout) {
+    public RunCmd setCout(Consumer<String> cout) {
         expectNull(__cout);
         __cout = cout;
+        return this;
     }
 
-    public void setCerr(Consumer<String> cerr) {
+    public RunCmd setCerr(Consumer<String> cerr) {
         expectNull(__cerr);
         __cerr = cerr;
+        return this;
     }
 
     public static enum ExitType {
@@ -62,11 +66,13 @@ public class RunCmd implements Runnable {
         Process proc = null;
         try {
             proc = pb.start();
-            Thread cout = new Thread(new StreamGobbler(proc.getInputStream(), __cout));
-            Thread cerr = new Thread(new StreamGobbler(proc.getErrorStream(), __cerr));
-            cout.start();
-            cerr.start();
+            List<Thread> threads = Arrays.asList(
+                    new Thread(new StreamGobbler(proc.getInputStream(), __cout)),
+                    new Thread(new StreamGobbler(proc.getErrorStream(), __cerr))
+            );
+            threads.forEach(Thread::start);
             proc.waitFor();
+            for (Thread thread : threads) thread.join();
             __exitValue = proc.exitValue();
             __exitType = ExitType.eNormal;
         } catch (IOException | InterruptedException e) {
