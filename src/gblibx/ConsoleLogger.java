@@ -25,7 +25,6 @@
  *
  *
  */
-
 package gblibx;
 
 import java.io.PrintStream;
@@ -97,6 +96,60 @@ public class ConsoleLogger implements Logger.Print {
         public Logger print(ELevel svr, String message) {
             _print(svr, message, __logger);
             return this;
+        }
+
+        public Logger info(String msg) {
+            print(ELevel.eInfo, msg);
+            return this;
+        }
+
+        public Logger info(String fmt, Object... args) {
+            return info(String.format(fmt, args));
+        }
+
+        public Logger warn(String msg) {
+            print(ELevel.eWarning, msg);
+            return this;
+        }
+
+        public Logger warn(String fmt, Object... args) {
+            return warn(String.format(fmt, args));
+        }
+
+        public Logger error(String msg) {
+            print(ELevel.eError, msg);
+            return this;
+        }
+
+        public Logger error(String fmt, Object... args) {
+            return error(String.format(fmt, args));
+        }
+
+        public Logger fatal(String msg) {
+            print(ELevel.eFatal, msg);
+            return this;
+        }
+
+        public Logger fatal(String fmt, Object... args) {
+            return fatal(String.format(fmt, args));
+        }
+
+        public Logger debug(String msg) {
+            print(ELevel.eDebug, msg);
+            return this;
+        }
+
+        public Logger debug(String fmt, Object... args) {
+            return debug(String.format(fmt, args));
+        }
+
+        public Logger message(String msg) {
+            print(ELevel.eMessage, msg);
+            return this;
+        }
+
+        public Logger message(String fmt, Object... args) {
+            return message(String.format(fmt, args));
         }
 
         private final Print __logger;

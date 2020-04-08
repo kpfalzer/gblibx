@@ -7,33 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/gblibx/RunCshCmd.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/gblibx/RunCshCmdTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copyright/MIT_License.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copyright/MIT_License.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gblibx.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gblibx.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Attributes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Attributes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/BasexIncr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/BasexIncr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/BgRunCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/BgRunCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Callback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Callback.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/ConsoleColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/ConsoleColors.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gblibx/ConsoleLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/ConsoleLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/FileLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/FileLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/FixedThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/FixedThreadPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/HttpConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/HttpConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Logger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Mailer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Mailer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/MessageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/MessageManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/PrintWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/PrintWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/RunCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/RunCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/yaap/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/yaap/Group.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/yaap/Option.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/yaap/Option.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/yaap/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/yaap/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/gblibx/BasexIncrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/gblibx/BasexIncrTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/RunCshCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/RunCshCmd.java" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,6 +60,18 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="JUnit.RunCshCmdTest.run">
     <configuration name="BasexIncrTest.incr" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">

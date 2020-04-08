@@ -39,6 +39,10 @@ public class RunCshCmd {
         return rcmd.isNormalExit() && (0 == rcmd.getExitValue());
     }
 
+    public static RunCmd runx(String cmd) {
+        return runx(cmd, System.out::println, System.err::println);
+    }
+
     public static RunCmd runx(String cmd, Consumer<String> cout, Consumer<String> cerr) {
         String[] acmd = new String[]{
                 CSH,
