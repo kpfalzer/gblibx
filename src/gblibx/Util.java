@@ -199,8 +199,12 @@ public class Util {
         return (!isNull(obj));
     }
 
+    public static void expectNever(String msg) {
+        invariant(false, msg);
+    }
+
     public static void expectNever() {
-        invariant(false, "never expect to get here");
+        expectNever("never expect to get here");
     }
 
     public static void invariant(boolean test, String msg) {
