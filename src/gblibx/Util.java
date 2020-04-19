@@ -217,6 +217,11 @@ public class Util {
         invariant(test, "invariant failed");
     }
 
+    public static <T,R> R invariantThen(T obj, Function<T, Boolean> test, Function<T, R> func) {
+        invariant(test.apply(obj));
+        return func.apply(obj);
+    }
+
     public static <T> Stream<T> findMatches(T[] lookHere, Collection<T> from) {
         return from.stream().filter(ele -> 0 <= Arrays.binarySearch(lookHere, ele));
     }

@@ -7,10 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Java_WebSocket_1_4_0_with_dependencies.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/gblibx_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/gblibx_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gblibx.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gblibx.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gblibx/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Util.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,8 +38,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gblibx/Util.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="206" column="20" lean-forward="true" selection-start-line="206" selection-start-column="20" selection-end-line="206" selection-end-column="20" />
+            <state relative-caret-position="452">
+              <caret line="220" column="35" lean-forward="true" selection-start-line="220" selection-start-column="35" selection-end-line="220" selection-end-column="35" />
               <folding>
                 <element signature="e#6267#6268#0" expanded="true" />
                 <element signature="e#6327#6328#0" expanded="true" />
@@ -126,6 +122,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="gblibx" />
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
@@ -390,8 +390,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gblibx/Util.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="206" column="20" lean-forward="true" selection-start-line="206" selection-start-column="20" selection-end-line="206" selection-end-column="20" />
+        <state relative-caret-position="452">
+          <caret line="220" column="35" lean-forward="true" selection-start-line="220" selection-start-column="35" selection-end-line="220" selection-end-column="35" />
           <folding>
             <element signature="e#6267#6268#0" expanded="true" />
             <element signature="e#6327#6328#0" expanded="true" />
