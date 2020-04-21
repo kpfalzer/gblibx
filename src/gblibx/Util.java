@@ -230,7 +230,7 @@ public class Util {
         invariant(test, "invariant failed");
     }
 
-    public static <T,R> R invariantThen(T obj, Function<T, Boolean> test, Function<T, R> func) {
+    public static <T, R> R invariantThen(T obj, Function<T, Boolean> test, Function<T, R> func) {
         invariant(test.apply(obj));
         return func.apply(obj);
     }
@@ -384,5 +384,13 @@ public class Util {
                 .distinct()
                 .collect(Collectors.joining(join));
         return uniq;
+    }
+
+    public static String upcase(String s) {
+        return applyIfNotNull(s, t -> t.toUpperCase());
+    }
+
+    public static String downcase(String s) {
+        return applyIfNotNull(s, t -> t.toLowerCase());
     }
 }
