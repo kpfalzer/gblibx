@@ -40,6 +40,11 @@ public class MultiLogger extends Logger {
         __theOne = this;
     }
 
+    public MultiLogger(String fname) throws IOException {
+        this();
+        setFileLogger(fname);
+    }
+
     public void setFileLogger(String fname) throws IOException {
         setFileLogger(fname, false);
     }

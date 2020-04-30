@@ -80,6 +80,10 @@ public class Util {
         return FileSystems.getDefault().getPath(file.getPath());
     }
 
+    public static String getAbsoluteFileName(String fname) {
+        return toPath(new File(fname)).toAbsolutePath().toString();
+    }
+
     /**
      * Determine (shortest) relative path of one filename to another.
      *
