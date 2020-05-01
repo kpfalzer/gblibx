@@ -8,8 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="39cc7205-37e3-40db-85aa-8ab13aff7867" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/MultiLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gblibx/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gblibx/HttpConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gblibx/HttpConnection.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -229,6 +228,11 @@
           <url>file://$PROJECT_DIR$/test/gblibx/RunCshCmdTest.java</url>
           <line>39</line>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gblibx/HttpConnection.java</url>
+          <line>174</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

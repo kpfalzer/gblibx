@@ -166,7 +166,12 @@ public class HttpConnection {
             response.append(inputLine);
         }
         in.close();
-        final String str = response.toString();
+        String str = response.toString();
+        if (!str.isEmpty() && ('{' != str.charAt(0))) {
+            //TODO: should return [] or {}.
+            //for now, everything is object/map.
+            str = "{\"data\":" + str + "}";
+        }
         final JSONObject json = new JSONObject(str);
         return toMap(json);
     }
