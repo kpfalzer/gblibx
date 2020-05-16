@@ -43,23 +43,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.nio.file.Files.setPosixFilePermissions;
 import static java.util.Objects.isNull;
 
 public class Util {
@@ -80,8 +77,12 @@ public class Util {
         return FileSystems.getDefault().getPath(file.getPath());
     }
 
+    public static String getAbsoluteFileName(File f) {
+        return toPath(f).toAbsolutePath().toString();
+    }
+
     public static String getAbsoluteFileName(String fname) {
-        return toPath(new File(fname)).toAbsolutePath().toString();
+        return getAbsoluteFileName(new File(fname));
     }
 
     /**
@@ -243,6 +244,15 @@ public class Util {
         return from.stream().filter(ele -> 0 <= Arrays.binarySearch(lookHere, ele));
     }
 
+    public static <T> int find(T[] items, T item) {
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].equals(item)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static <T> boolean contains(T[] set, T item) {
         return Arrays.asList(set).contains(item);
     }
@@ -396,5 +406,15 @@ public class Util {
 
     public static String downcase(String s) {
         return applyIfNotNull(s, t -> t.toLowerCase());
+    }
+
+    /**
+     * Set file permissions.
+     * @param f file.
+     * @param perms (e.g. rw-r--r--)
+     */
+    public static Path setFilePermissions(File f, String perms) throws IOException {
+        Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(perms);
+        return setPosixFilePermissions(toPath(f), permissions);
     }
 }
