@@ -417,4 +417,8 @@ public class Util {
         Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(perms);
         return setPosixFilePermissions(toPath(f), permissions);
     }
+
+    public static boolean fileIsReadable(String fileName) {
+        return Files.isReadable(toPath(new File(fileName)));
+    }
 }
