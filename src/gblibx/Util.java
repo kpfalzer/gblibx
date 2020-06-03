@@ -329,7 +329,7 @@ public class Util {
         return null;
     }
 
-    public static String join(String[] eles, String sep) {
+    public static String join(Iterable<String> eles, String sep) {
         StringBuilder sbuf = new StringBuilder();
         for (String ele : eles) {
             if (0 < sbuf.length()) {
@@ -342,6 +342,10 @@ public class Util {
 
     public static String join(String[] eles) {
         return join(eles, " ");
+    }
+
+    public static String join(String[] eles, String sep) {
+        return join(Arrays.asList(eles), sep);
     }
 
     public static String getString(Map<String, Object> opts, String key) {
@@ -420,5 +424,10 @@ public class Util {
 
     public static boolean fileIsReadable(String fileName) {
         return Files.isReadable(toPath(new File(fileName)));
+    }
+
+    public static <T> T[] arrayFill(T[] ar, T val) {
+        Arrays.fill(ar, val);
+        return ar;
     }
 }
