@@ -430,4 +430,11 @@ public class Util {
         Arrays.fill(ar, val);
         return ar;
     }
+
+    public static <T> T[] append(T[] eles, T... more) {
+        T[] combined = Arrays.copyOf(eles, eles.length+more.length);
+        for (int i = 0; i < more.length; ++i)
+            combined[eles.length + i] = more[i];
+        return combined;
+    }
 }
