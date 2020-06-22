@@ -38,7 +38,7 @@ import static gblibx.Util.isNonNull;
 
 // messages of form: W-17sep19-10:02:35:
 public abstract class Logger {
-    public static enum ELevel {
+    public enum ELevel {
         eDebug('D'),
         eInfo('I'),
         eWarning('W'),
@@ -63,28 +63,13 @@ public abstract class Logger {
     }
 
     public void setLevel(char level) {
-        switch (level) {
-            case 'D':
-                setLevel(ELevel.eDebug);
-                break;
-            case 'I':
-                setLevel(ELevel.eInfo);
-                break;
-            case 'W':
-                setLevel(ELevel.eWarning);
-                break;
-            case 'E':
-                setLevel(ELevel.eError);
-                break;
-            case 'F':
-                setLevel(ELevel.eFatal);
-                break;
-            case 'M':
-                setLevel(ELevel.eMessage);
-                break;
-            default:
-                expectNever();
+        for (ELevel e : ELevel.values()) {
+            if (Character.toUpperCase(level) == e.abbrev) {
+                setLevel(e);
+                return;
+            }
         }
+        expectNever();
     }
 
     public ELevel setLevel(ELevel level) {
@@ -111,7 +96,7 @@ public abstract class Logger {
         }
     }
 
-    public String getMessage(ELevel svr, String msg) {
+    public static String getMessage(ELevel svr, String msg) {
         return String.format("%c-%s: %s", svr.abbrev, Util.getLocalDateTime(), msg);
     }
 
@@ -149,7 +134,7 @@ public abstract class Logger {
         return (0 >= __level.compareTo(svr));
     }
 
-    protected Logger _print(ELevel svr, String msg, Print... oses) {
+    protected synchronized Logger _print(ELevel svr, String msg, Print... oses) {
         __msgCnts.put(svr, 1 + getMessageCount(svr));
         if (doLogMessage(svr)) {
             final String fmsg = getMessage(svr, msg);

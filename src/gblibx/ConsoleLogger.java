@@ -48,7 +48,7 @@ public class ConsoleLogger implements Logger.Print {
     }
 
     @Override
-    public Logger.Print print(Logger.ELevel svr, String message) {
+    public synchronized Logger.Print print(Logger.ELevel svr, String message) {
         String color = null;
         PrintStream os = __cout;
         switch (svr) {

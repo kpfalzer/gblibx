@@ -34,6 +34,10 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 public class FileLogger implements Logger.Print {
+    public FileLogger(String name) throws FileNotFoundException {
+        this(new File(name));
+    }
+
     public FileLogger(File flog) throws FileNotFoundException {
         this(flog, false);
     }
@@ -43,8 +47,14 @@ public class FileLogger implements Logger.Print {
         __os = new PrintStream(new FileOutputStream(__file, append));
     }
 
+    /**
+     * Unconditionally, print message to file.
+     * @param svr value is ignored.
+     * @param message message to print.
+     * @return
+     */
     @Override
-    public Logger.Print print(Logger.ELevel svr, String message) {
+    public synchronized Logger.Print print(Logger.ELevel svr, String message) {
         __os.println(message);
         __os.flush();
         return this;

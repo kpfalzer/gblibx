@@ -136,6 +136,23 @@ public class Util {
         return json;
     }
 
+    /**
+     * Convert series of key+val to map.
+     * @param kvs pairs of key, value.
+     * @param <K> key type.
+     * @param <T> value type.
+     * @return Map<K,T>
+     */
+    public static <K,T> Map<K,T> toMap(Object... kvs) {
+        Map<K,T> map = new HashMap<>();
+        for (int i = 0; i < kvs.length; i += 2) {
+            final K key = castobj(kvs[i]);
+            final T val = castobj(kvs[i+1]);
+            map.put(key, val);
+        }
+        return map;
+    }
+
     public static Map<String, Object> toMap(JSONObject jsobj) {
         HashMap<String, Object> map = new HashMap<>();
         jsobj.keySet().forEach(k -> {
