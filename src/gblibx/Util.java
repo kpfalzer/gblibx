@@ -454,4 +454,13 @@ public class Util {
             combined[eles.length + i] = more[i];
         return combined;
     }
+
+    public static File getReadableFile(String fname) {
+        File file = new File(fname);
+        if (file.exists() && file.canRead() && file.isFile()) {
+            return file;
+        } else {
+            return null;
+        }
+    }
 }
