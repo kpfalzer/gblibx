@@ -1,0 +1,11 @@
+#!/bin/csh -f
+
+set prog=${0}
+if ("${prog:h}" == "${prog:t}") then
+	set prog="./${prog}"
+endif
+set root=${prog:h}
+set mod=gblibx
+set jar="${root}/${mod}.jar"
+#spec mem: else takes 32G ???
+exec java -Xmx10M -ea -cp $jar gblibx.Encryptor ${*}

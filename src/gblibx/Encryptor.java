@@ -42,7 +42,6 @@ import static gblibx.Util.invariant;
  * NOTE comment:
  * CBC is no longer a secure mode. Padding is vulnerable to padding Oracle attacks. Also, handling the key and messages
  * in String is not safe. They'll linger in the String pool and appear in a heap dump –
- *
  */
 public class Encryptor {
     /*
@@ -79,7 +78,7 @@ public class EncryptorDemo {
     }
 
     public static String encrypt(String kiv, String value) {
-        return encrypt(kiv.substring(16), kiv.substring(0,16), value);
+        return encrypt(kiv.substring(16), kiv.substring(0, 16), value);
     }
 
     public static String encrypt(File kiv, String value) throws IOException {
@@ -91,7 +90,7 @@ public class EncryptorDemo {
     }
 
     public static String decrypt(String kiv, String encrypted) {
-        return decrypt(kiv.substring(16), kiv.substring(0,16), encrypted);
+        return decrypt(kiv.substring(16), kiv.substring(0, 16), encrypted);
     }
 
     public static String decrypt(String key, String randomVector, String encrypted) {
@@ -116,24 +115,25 @@ public class EncryptorDemo {
         return new Util.Pair(iv, skeySpec);
     }
 
-    public static String KEY = System.getProperty("gblibx.Encryptor.KEY","AES");
-    public static String CIPHER = System.getProperty("gblibx.Encryptor.CIPHER","AES/CBC/PKCS5PADDING");
+    public static String KEY = System.getProperty("gblibx.Encryptor.KEY", "AES");
+    public static String CIPHER = System.getProperty("gblibx.Encryptor.CIPHER", "AES/CBC/PKCS5PADDING");
 
     public static void main(String[] argv) {
         if (2 != argv.length) {
-            System.err.println("Usage: key value");
+            System.err.println("Usage: keyfile value");
             System.exit(1);
         }
-        final String key = argv[0], value = argv[1];
-        if (32 != key.length()) {
-            System.err.println("key must be 32 chars");
-            System.exit(1);
+        final File keyfile = new File(argv[0]);
+        final String value = argv[1];
+        try {
+            final String encrypted = encrypt(keyfile, value);
+            System.out.println("Encrypted: " + encrypted);
+            final String decrypted = decrypt(keyfile, encrypted);
+            //System.out.println("Decrypted: " + decrypted);
+            invariant(value.equals(decrypted));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        final String encrypted = encrypt(key, value);
-        System.out.println("Encrypted: " + encrypted);
-        final String decrypted = decrypt(key, encrypted);
-        //System.out.println("Decrypted: " + decrypted);
-        invariant(value.equals(decrypted));
         System.exit(0);
     }
 }
