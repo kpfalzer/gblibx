@@ -38,8 +38,8 @@ import static java.util.Objects.isNull;
 /**
  * Accumulate work and dispatch periodically.
  */
-public class TimedWork<T> {
-    public TimedWork(int periodSec, Consumer<List<T>> consumer) {
+public class PeriodicWork<T> {
+    public PeriodicWork(int periodSec, Consumer<List<T>> consumer) {
         _periodMilliSec = 1000 * periodSec;
         _consumer = consumer;
     }

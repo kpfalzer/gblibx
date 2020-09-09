@@ -34,9 +34,9 @@ import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TimedWorkTest {
+class PeriodicWorkTest {
 
-    static class Work extends TimedWork<Integer> {
+    static class Work extends PeriodicWork<Integer> {
 
         public Work() {
             super(5, new Consumer<List<Integer>>() {
