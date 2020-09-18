@@ -138,16 +138,17 @@ public class Util {
 
     /**
      * Convert series of key+val to map.
+     *
      * @param kvs pairs of key, value.
      * @param <K> key type.
      * @param <T> value type.
-     * @return Map<K,T>
+     * @return Map<K, T>
      */
-    public static <K,T> Map<K,T> toMap(Object... kvs) {
-        Map<K,T> map = new HashMap<>();
+    public static <K, T> Map<K, T> toMap(Object... kvs) {
+        Map<K, T> map = new HashMap<>();
         for (int i = 0; i < kvs.length; i += 2) {
             final K key = castobj(kvs[i]);
-            final T val = castobj(kvs[i+1]);
+            final T val = castobj(kvs[i + 1]);
             map.put(key, val);
         }
         return map;
@@ -431,7 +432,8 @@ public class Util {
 
     /**
      * Set file permissions.
-     * @param f file.
+     *
+     * @param f     file.
      * @param perms (e.g. rw-r--r--)
      */
     public static Path setFilePermissions(File f, String perms) throws IOException {
@@ -449,7 +451,7 @@ public class Util {
     }
 
     public static <T> T[] append(T[] eles, T... more) {
-        T[] combined = Arrays.copyOf(eles, eles.length+more.length);
+        T[] combined = Arrays.copyOf(eles, eles.length + more.length);
         for (int i = 0; i < more.length; ++i)
             combined[eles.length + i] = more[i];
         return combined;
@@ -463,4 +465,13 @@ public class Util {
             return null;
         }
     }
+
+    public static String quotify(String s, String q) {
+        return q + s + q;
+    }
+
+    public static String squotify(String s) {
+        return quotify(s, "'");
+    }
+
 }
