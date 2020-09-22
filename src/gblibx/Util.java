@@ -474,4 +474,16 @@ public class Util {
         return quotify(s, "'");
     }
 
+    public static String pluralize(String singular, int cnt, String suffix) {
+        return (1 < cnt) ? (singular + suffix) : singular;
+    }
+
+    public static String pluralize(String singular, int cnt) {
+        return pluralize(singular, cnt, "s");
+    }
+
+    public static String pluralizes(String singular, int cnt) {
+        return pluralize(singular, cnt, "es");
+    }
+
 }
