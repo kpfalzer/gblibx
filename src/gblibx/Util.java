@@ -486,4 +486,26 @@ public class Util {
         return pluralize(singular, cnt, "es");
     }
 
+    public static int minOf(int... eles) {
+        invariant(0 < eles.length);
+        int min = eles[0];
+        for (int i = 1; i < eles.length; i++) {
+            if (eles[i] < min) min = eles[i];
+        }
+        return min;
+    }
+
+    /**
+     * Return true if target needs to be made.
+     * @param depFname dependency filename
+     * @param tgtFname target filename
+     * @return true iff. target needs to be remade
+     */
+    public static boolean outOfDate(String depFname, String tgtFname) {
+        File tgt = new File(getAbsoluteFileName(tgtFname));
+        if (! tgt.exists()) return true;
+        File dep = new File(getAbsoluteFileName(depFname));
+        if (! dep.exists()) return true;  //really an error
+        return (tgt.lastModified() < dep.lastModified());
+    }
 }

@@ -39,6 +39,12 @@ import java.util.function.Consumer;
 import static gblibx.Util.expectNull;
 
 public class RunCmd implements Runnable {
+    public static int runCommand(String command) {
+        RunCmd e = new RunCmd(command);
+        e.run();
+        return e.getExitValue();
+    }
+
     public RunCmd(String s) {
         this(s.split("\\s+"));
     }
