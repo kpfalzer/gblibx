@@ -46,10 +46,20 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.time.temporal.IsoFields;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -508,4 +518,13 @@ public class Util {
         if (! dep.exists()) return true;  //really an error
         return (tgt.lastModified() < dep.lastModified());
     }
+
+    public static int getWW(Timestamp ts) {
+        return getWW(ts.toLocalDateTime());
+    }
+
+    public static int getWW(LocalDateTime ldt) {
+        return ldt.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+    }
+
 }
