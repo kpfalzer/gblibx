@@ -527,4 +527,11 @@ public class Util {
         return ldt.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     }
 
+    public static String getClassOfMethod(int i) {
+        String[] eles = Thread.currentThread().getStackTrace()[i].getClassName().split("\\.");
+        return eles[eles.length-1];
+    }
+    public static String getClassOfMethod() {
+        return getClassOfMethod(3);
+    }
 }
