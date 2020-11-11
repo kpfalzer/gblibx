@@ -507,15 +507,16 @@ public class Util {
 
     /**
      * Return true if target needs to be made.
+     *
      * @param depFname dependency filename
      * @param tgtFname target filename
      * @return true iff. target needs to be remade
      */
     public static boolean outOfDate(String depFname, String tgtFname) {
         File tgt = new File(getAbsoluteFileName(tgtFname));
-        if (! tgt.exists()) return true;
+        if (!tgt.exists()) return true;
         File dep = new File(getAbsoluteFileName(depFname));
-        if (! dep.exists()) return true;  //really an error
+        if (!dep.exists()) return true;  //really an error
         return (tgt.lastModified() < dep.lastModified());
     }
 
@@ -529,9 +530,20 @@ public class Util {
 
     public static String getClassOfMethod(int i) {
         String[] eles = Thread.currentThread().getStackTrace()[i].getClassName().split("\\.");
-        return eles[eles.length-1];
+        return eles[eles.length - 1];
     }
+
     public static String getClassOfMethod() {
         return getClassOfMethod(3);
     }
+
+    public static LocalDateTime now() {
+        return LocalDateTime.now();//(TZ);
+    }
+
+    public static double secToNow(LocalDateTime from) {
+        return Duration.between(from.toLocalTime(), now().toLocalTime()).toMillis() / 1000.0;
+    }
+
+
 }
