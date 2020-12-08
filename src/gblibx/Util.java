@@ -31,9 +31,8 @@ package gblibx;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
@@ -545,5 +544,71 @@ public class Util {
         return Duration.between(from.toLocalTime(), now().toLocalTime()).toMillis() / 1000.0;
     }
 
+    /**
+     * Validate value and return same or elseVal.
+     *
+     * @param val       value to validate.
+     * @param validator true if valid value.
+     * @param elseVal   if invalid then retunr this value.
+     * @param <T>
+     * @return val or elseVal.
+     */
+    public static <T> T validate(T val, Function<T, Boolean> validator, T elseVal) {
+        return (validator.apply(val)) ? val : elseVal;
+    }
+
+    public static Thread getCurrentThread() {
+        return Thread.currentThread();
+    }
+
+    public static long getCurrentThreadId() {
+        return getCurrentThread().getId();
+    }
+
+    public static void logException(PrintStream os, Exception ex) {
+        synchronized (os) {
+            final Thread thread = Thread.currentThread();
+            os.printf("%s (%s:%d) {\n", now(), thread.getName(), thread.getId());
+            ex.printStackTrace(os);
+            os.println("}");
+            os.flush();
+        }
+    }
+
+    public static void logException(Exception ex) {
+        logException(System.err, ex);
+    }
+
+    public static void logMessage(PrintStream os, String msg, boolean trace) {
+        synchronized (os) {
+            final Thread thread = Thread.currentThread();
+            os.printf("%s (%s:%d) {\n", now(), thread.getName(), thread.getId());
+            os.printf("Message: %s\n", msg);
+            if (trace) {
+                final StackTraceElement[] eles = thread.getStackTrace();
+                for (int i = 0; i < eles.length; i++) {
+                    os.printf("  [%d] %s\n", i, eles[i]);
+                }
+            }
+            os.println("}");
+            os.flush();
+        }
+    }
+
+    public static void logMessage(String msg, boolean trace) {
+        logMessage(System.err, msg, trace);
+    }
+
+    public static void logMessage(String msg) {
+        logMessage(msg, false);
+    }
+
+    public static void logMessageWithTrace(PrintStream os, String msg) {
+        logMessage(os, msg, true);
+    }
+
+    public static void logMessageWithTrace(String msg) {
+        logMessageWithTrace(System.err, msg);
+    }
 
 }
