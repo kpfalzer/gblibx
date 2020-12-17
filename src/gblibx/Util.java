@@ -34,6 +34,9 @@ import org.json.JSONObject;
 import java.io.*;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -50,15 +53,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -67,6 +62,8 @@ import java.util.stream.Stream;
 
 import static java.nio.file.Files.setPosixFilePermissions;
 import static java.util.Objects.isNull;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 public class Util {
     public static String repeat(String s, int rep) {
@@ -611,4 +608,77 @@ public class Util {
         logMessageWithTrace(System.err, msg);
     }
 
+    public static String rmAllWhiteSpace(String s) {
+        return s.trim().replaceAll("\\s+", "");
+    }
+
+    public static boolean isNullOrEmpty(String s) {
+        return isNull(s) || s.isEmpty();
+    }
+
+    public static String encodeURL(String s) {
+        String encoded = s;
+        try {
+            encoded = URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            //do nothing
+        }
+        return encoded;
+    }
+    public static String decodeURL(String v) {
+        String decoded = v;
+        try {
+            decoded = URLDecoder.decode(v, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            //do nothing
+        }
+        return decoded;
+    }
+
+    public static String addParamsToURL(String base, Map<String, List<String>> params) {
+        //drop parameters
+        int q = base.indexOf('?');
+        if (0 < q) base = base.substring(0, q);
+        StringBuilder sbuf = new StringBuilder(base);
+        if (isNonNull(params) && !params.isEmpty()) {
+            boolean useQmark = true;
+            for (Map.Entry<String,List<String>> kv : params.entrySet()) {
+                final String k = encodeURL(kv.getKey());
+                for (String v : kv.getValue()) {
+                    sbuf.append(useQmark ? '?' : '&');
+                    sbuf.append(k).append('=').append(encodeURL(v));
+                    useQmark = false;
+                }
+            }
+        }
+        return sbuf.toString();
+    }
+
+    public static Map<String, List<String>> getURLParams(String urlParms) {
+        Map<String, List<String>> parms = new HashMap<>();
+        if (isNullOrEmpty(urlParms)) return parms;
+        //drop parameters
+        int q = urlParms.indexOf('?');
+        if ((0 < q) && (q < urlParms.length())) urlParms = urlParms.substring(q+1);
+        for (String kv : urlParms.split("&")) {
+            int p = kv.indexOf('=');
+            String k = (0 < p) ? kv.substring(0, p) : kv;
+            String v = (0 < p) ? kv.substring(p + 1) : null;
+            k = decodeURL(k);
+            v = decodeURL(v);
+            if (!parms.containsKey(k)) {
+                parms.put(k, new LinkedList<>());
+            }
+            if (isNonNull(v)) {
+                parms.get(k).add(v);
+            }
+        }
+        return parms;
+    }
+
+    public static List<String> toList(String... eles) {
+        List<String> list = new LinkedList<>();
+        for (String e : eles) list.add(e);
+        return list;
+    }
 }
