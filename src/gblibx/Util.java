@@ -28,6 +28,7 @@
 
 package gblibx;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -55,6 +56,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -644,11 +646,10 @@ public class Util {
             boolean useQmark = true;
             for (Map.Entry<String,List<String>> kv : params.entrySet()) {
                 final String k = encodeURL(kv.getKey());
-                for (String v : kv.getValue()) {
-                    sbuf.append(useQmark ? '?' : '&');
-                    sbuf.append(k).append('=').append(encodeURL(v));
-                    useQmark = false;
-                }
+                final String v = join(kv.getValue(),",");
+                sbuf.append(useQmark ? '?' : '&');
+                sbuf.append(k).append('=').append(encodeURL(v));
+                useQmark = false;
             }
         }
         return sbuf.toString();
@@ -676,9 +677,13 @@ public class Util {
         return parms;
     }
 
-    public static List<String> toList(String... eles) {
+    public static List<String> toList(Iterable<String> eles) {
         List<String> list = new LinkedList<>();
         for (String e : eles) list.add(e);
         return list;
+    }
+
+    public static List<String> toList(String... eles) {
+        return Arrays.asList(eles);
     }
 }
