@@ -64,15 +64,14 @@ public class HttpConnection {
     /**
      * GET request.
      *
-     * @param host   hostname.
+     * @param host   hostname (null if path is complete url).
      * @param port   port.
      * @param path   path.json.
      * @param params key=val...
      * @return response.
      * @throws Exception
      */
-    public static Map<String,Object> get(String host, int port, String path, String... params) throws Exception {
-        invariant(path.endsWith(".json"));
+    public static Map<String, Object> get(String host, int port, String path, String... params) throws Exception {
         try {
             StringBuffer npath = new StringBuffer(path);
             {
@@ -85,7 +84,9 @@ public class HttpConnection {
                     sep = '&';
                 }
             }
-            final URL url = new URL("http", host, port, npath.toString());
+            final URL url = (isNonNull(host))
+                    ? new URL("http", host, port, npath.toString())
+                    : new URL(path);
             final HttpURLConnection http = downcast(url.openConnection());
             http.setRequestMethod("GET");
             http.setRequestProperty("User-Agent", __USER_AGENT);
@@ -107,21 +108,22 @@ public class HttpConnection {
     /**
      * POST request.
      *
-     * @param host hostname.
+     * @param host hostname (can be null if path is complete url).
      * @param port port.
      * @param path path.json
      * @param vals key+val set.
      * @return response.
      * @throws Exception
      */
-    public static Map<String,Object> postJSON(String host, int port, String path, Map<String, Object> vals) throws Exception {
+    public static Map<String, Object> postJSON(String host, int port, String path, Map<String, Object> vals) throws Exception {
         //https://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
         //https://stackoverflow.com/questions/7181534/http-post-using-json-in-java
-        invariant(path.endsWith(".json"));
         final JSONObject json = new JSONObject(vals);
         final URL url;
         try {
-            url = new URL("http", host, port, path);
+            url = (isNonNull(host))
+                    ? new URL("http", host, port, path)
+                    : new URL(path);
             final HttpURLConnection http = downcast(url.openConnection());
             http.setRequestMethod("POST");
             http.setRequestProperty("User-Agent", __USER_AGENT);
@@ -150,7 +152,7 @@ public class HttpConnection {
      * @return response.
      * @throws Exception
      */
-    public static Map<String,Object> postJSON(String host, int port, String path, Object... keyVals) throws Exception {
+    public static Map<String, Object> postJSON(String host, int port, String path, Object... keyVals) throws Exception {
         invariant(isEven(keyVals.length));
         Map<String, Object> kvs = new HashMap<>();
         for (int i = 0; i < keyVals.length; i += 2) {
@@ -161,7 +163,7 @@ public class HttpConnection {
         return postJSON(host, port, path, kvs);
     }
 
-    public static Map<String,Object> getResponse(HttpURLConnection http) throws IOException {
+    public static Map<String, Object> getResponse(HttpURLConnection http) throws IOException {
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(http.getInputStream()));
         String inputLine;
