@@ -41,10 +41,12 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static gblibx.Util.*;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_OK;
+import static java.util.Objects.isNull;
 
 public class HttpConnection {
     public static class Exception extends java.lang.Exception {
@@ -130,12 +132,13 @@ public class HttpConnection {
             http.setRequestProperty("Accept-Charset", __CHARSET);
             final byte[] data = json.toString().getBytes(StandardCharsets.UTF_8);
             http.setFixedLengthStreamingMode(data.length);
+            http.setDoOutput(true);
             http.setRequestProperty("Content-Type", "application/json;charset=" + __CHARSET);
-            http.setDoOutput(true);  //todo: need this?
             try (OutputStream os = http.getOutputStream()) {
                 os.write(data);
                 os.flush();
             }
+            checkResponse(http);
             return getResponse(http);
         } catch (IOException e) {
             throw new Exception(e);
@@ -161,6 +164,27 @@ public class HttpConnection {
             kvs.put(key, val);
         }
         return postJSON(host, port, path, kvs);
+    }
+
+    private static void checkResponse(HttpURLConnection http) throws IOException {
+        if (200 == http.getResponseCode()) return;
+        System.err.printf("checkResponse fail details: BEGIN{{\n");
+        System.err.printf("%s getContentType=%s\n", http.getURL(),
+                http.getContentType());
+        int rcode = http.getResponseCode();
+        System.err.printf("%d: %s\n", rcode, http.getResponseMessage());
+        if (200 != rcode) {
+            String resp = new BufferedReader(new InputStreamReader(http.getErrorStream()))
+                    .lines().collect(Collectors.joining("\n"));
+            System.err.printf("details: %s\n", resp);
+        }
+        for (int i = 0; i < 99; ++i) {
+            String k = http.getHeaderFieldKey(i);
+            if (isNull(k)) continue;
+            String v = http.getHeaderField(i);
+            System.err.printf("%s=%s\n", k, v);
+        }
+        System.err.println("}}END");
     }
 
     public static Map<String, Object> getResponse(HttpURLConnection http) throws IOException {
