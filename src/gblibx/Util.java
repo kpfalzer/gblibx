@@ -28,25 +28,16 @@
 
 package gblibx;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.sql.Timestamp;
@@ -54,9 +45,16 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -64,10 +62,16 @@ import java.util.stream.Stream;
 
 import static java.nio.file.Files.setPosixFilePermissions;
 import static java.util.Objects.isNull;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toList;
 
 public class Util {
+    // Index into ary and allow negative ix (from end).
+    public static <T> T index(T[] ary, int ix) {
+        return (0 <= ix)
+                ? ary[ix]
+                : ary[ary.length + ix]
+                ;
+    }
+
     public static String repeat(String s, int rep) {
         //note: there is String.repeat() in java11
         StringBuilder buf = new StringBuilder();
@@ -627,6 +631,7 @@ public class Util {
         }
         return encoded;
     }
+
     public static String decodeURL(String v) {
         String decoded = v;
         try {
@@ -644,9 +649,9 @@ public class Util {
         StringBuilder sbuf = new StringBuilder(base);
         if (isNonNull(params) && !params.isEmpty()) {
             boolean useQmark = true;
-            for (Map.Entry<String,List<String>> kv : params.entrySet()) {
+            for (Map.Entry<String, List<String>> kv : params.entrySet()) {
                 final String k = encodeURL(kv.getKey());
-                final String v = join(kv.getValue(),",");
+                final String v = join(kv.getValue(), ",");
                 sbuf.append(useQmark ? '?' : '&');
                 sbuf.append(k).append('=').append(encodeURL(v));
                 useQmark = false;
@@ -660,7 +665,7 @@ public class Util {
         if (isNullOrEmpty(urlParms)) return parms;
         //drop parameters
         int q = urlParms.indexOf('?');
-        if ((0 < q) && (q < urlParms.length())) urlParms = urlParms.substring(q+1);
+        if ((0 < q) && (q < urlParms.length())) urlParms = urlParms.substring(q + 1);
         for (String kv : urlParms.split("&")) {
             int p = kv.indexOf('=');
             String k = (0 < p) ? kv.substring(0, p) : kv;
