@@ -36,6 +36,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -43,7 +44,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static gblibx.Util.*;
+import static gblibx.Util.castobj;
+import static gblibx.Util.downcast;
+import static gblibx.Util.invariant;
+import static gblibx.Util.isEven;
+import static gblibx.Util.isNonNull;
+import static gblibx.Util.toMap;
+import static java.lang.Thread.sleep;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.util.Objects.isNull;
@@ -117,7 +124,8 @@ public class HttpConnection {
      * @return response.
      * @throws Exception
      */
-    public static Map<String, Object> postJSON(String host, int port, String path, Map<String, Object> vals) throws Exception {
+    public static Map<String, Object> postJSON(String host, int port, String path, Map<String, Object> vals)
+            throws Exception {
         //https://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
         //https://stackoverflow.com/questions/7181534/http-post-using-json-in-java
         final JSONObject json = new JSONObject(vals);
@@ -126,23 +134,41 @@ public class HttpConnection {
             url = (isNonNull(host))
                     ? new URL("http", host, port, path)
                     : new URL(path);
-            final HttpURLConnection http = downcast(url.openConnection());
-            http.setRequestMethod("POST");
-            http.setRequestProperty("User-Agent", __USER_AGENT);
-            http.setRequestProperty("Accept-Charset", __CHARSET);
-            final byte[] data = json.toString().getBytes(StandardCharsets.UTF_8);
-            http.setFixedLengthStreamingMode(data.length);
-            http.setDoOutput(true);
-            http.setRequestProperty("Content-Type", "application/json;charset=" + __CHARSET);
-            try (OutputStream os = http.getOutputStream()) {
-                os.write(data);
-                os.flush();
-            }
-            checkResponse(http);
-            return getResponse(http);
-        } catch (IOException e) {
+        } catch (MalformedURLException e) {
             throw new Exception(e);
         }
+        //Well loop here with retry
+        for (int nloop = __POST_RETRY_NLOOP; nloop > 0; --nloop) {
+            HttpURLConnection http = null;
+            try {
+                http = downcast(url.openConnection());
+                http.setRequestMethod("POST");
+                http.setRequestProperty("User-Agent", __USER_AGENT);
+                http.setRequestProperty("Accept-Charset", __CHARSET);
+                final byte[] data = json.toString().getBytes(StandardCharsets.UTF_8);
+                http.setFixedLengthStreamingMode(data.length);
+                http.setDoOutput(true);
+                http.setRequestProperty("Content-Type", "application/json;charset=" + __CHARSET);
+                try (OutputStream os = http.getOutputStream()) {
+                    os.write(data);
+                    os.flush();
+                }
+                checkResponse(http);
+                return getResponse(http);
+            } catch (IOException e) {
+                if (isNonNull(http)) {
+                    http.disconnect();
+                }
+                if (0 == nloop)
+                    throw new Exception(e);
+            }
+            try {
+                sleep(1000 * POST_RETRY_LOOP_SEC);
+            } catch (InterruptedException e) {
+                ;
+            }
+        }
+        return null;
     }
 
     /**
@@ -208,4 +234,11 @@ public class HttpConnection {
 
     private static final String __USER_AGENT = "Mozilla/5.0";
     private static final String __CHARSET = "UTF-8";
+
+    public static final int POST_RETRY_LOOP_SEC =
+            Integer.parseInt(System.getProperty("gblibx.httpconnection.postRetryLoopSec", "5"));
+    public static final int POST_RETRY_TOTAL_WAIT_SEC =
+            Integer.parseInt(System.getProperty("gblibx.httpconnection.postRetryTotalWaitSec", "300"));
+    private static final int __POST_RETRY_NLOOP =
+            POST_RETRY_TOTAL_WAIT_SEC / POST_RETRY_LOOP_SEC;
 }
