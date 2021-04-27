@@ -229,6 +229,15 @@ public class Util {
         return (D) base;
     }
 
+    /**
+     * For cases where base is Integer and want Double.
+     * @param base object which can be converted to double.
+     * @return base as double value.
+     */
+    public static double toDouble(Object base) {
+        return Double.parseDouble(base.toString());
+    }
+
     public static <T> T expectNull(T x) {
         if (x != null) {
             throw new RuntimeException("Expect null");
