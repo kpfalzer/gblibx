@@ -48,6 +48,7 @@ public class CharBuffer {
 
     /**
      * Accept la(0) and return it.
+     *
      * @return la(0)
      */
     public char accept() {
@@ -99,6 +100,7 @@ public class CharBuffer {
 
     /**
      * Get number of chars remaining.
+     *
      * @return number of chars remaining.
      */
     public int rem() {
@@ -129,6 +131,18 @@ public class CharBuffer {
         }
 
         public int lineno, col, ix;
+    }
+
+    public String getLocation() {
+        return getLocation(lineno(), col());
+    }
+
+    public String getLocation(int lineno, int col) {
+        return String.format("%d:%d", lineno, col);
+    }
+
+    public String getLocation(Mark mark) {
+        return getLocation(mark.lineno, mark.col);
     }
 
     private final char[] __buf;
