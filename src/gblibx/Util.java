@@ -45,15 +45,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -166,6 +158,14 @@ public class Util {
         return map;
     }
 
+    public static <T> Set<T> toSet(T... vals) {
+        Set<T> set = new HashSet<>();
+        for (T e : vals) {
+            set.add(e);
+        }
+        return set;
+    }
+
     public static Map<String, Object> toMap(JSONObject jsobj) {
         HashMap<String, Object> map = new HashMap<>();
         jsobj.keySet().forEach(k -> {
@@ -231,6 +231,7 @@ public class Util {
 
     /**
      * For cases where base is Integer and want Double.
+     *
      * @param base object which can be converted to double.
      * @return base as double value.
      */
