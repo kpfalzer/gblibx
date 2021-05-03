@@ -30,7 +30,7 @@ package gblibx;
 public class CharBuffer {
     public CharBuffer(char[] buf) {
         __buf = buf;
-        __mark = new Mark();
+        __mark = new Mark(this);
     }
 
     public CharBuffer(String buf) {
@@ -72,7 +72,7 @@ public class CharBuffer {
             if ('\n' != c) {
                 __mark.col++;
             } else {
-                __mark = new Mark(lineno() + 1, 0, ix());
+                __mark = new Mark(lineno() + 1, 0, ix(), this);
             }
         }
         return la();
@@ -116,21 +116,28 @@ public class CharBuffer {
     }
 
     public static class Mark {
-        private Mark(int lineno, int col, int ix) {
+        private Mark(int lineno, int col, int ix, CharBuffer cbuf) {
             this.lineno = lineno;
             this.col = col;
             this.ix = ix;
+            __cbuf = cbuf;
         }
 
         public Mark clone() {
-            return new Mark(lineno, col, ix);
+            return new Mark(lineno, col, ix, __cbuf);
         }
 
-        private Mark() {
-            this(1, 0, 0);
+        private Mark(CharBuffer cbuf) {
+            this(1, 0, 0, cbuf);
         }
 
         public int lineno, col, ix;
+        // Need access to outer, so we can use getLocation().
+        private final CharBuffer __cbuf;
+
+        public String toString() {
+            return __cbuf.getLocation(this);
+        }
     }
 
     public String getLocation() {
