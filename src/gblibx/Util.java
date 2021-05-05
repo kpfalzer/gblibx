@@ -158,10 +158,15 @@ public class Util {
         return map;
     }
 
-    public static <T> Set<T> toSet(T... vals) {
+    public static <T> Set<T> toSet(Object... vals) {
         Set<T> set = new HashSet<>();
-        for (T e : vals) {
-            set.add(e);
+        for (Object e : vals) {
+            if (e instanceof Collection)
+                for (T ee : (Collection<T>) e) {
+                    set.add(ee);
+                }
+            else
+                set.add(castobj(e));
         }
         return set;
     }
