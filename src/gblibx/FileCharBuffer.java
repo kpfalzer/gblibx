@@ -64,7 +64,7 @@ public class FileCharBuffer extends CharBuffer {
     }
 
     public String getLocation(int lineno, int col) {
-        return String.format("%s:%d:%d", lineno, col);
+        return String.format("%s:%d:%d", filename, lineno, col);
     }
 
     public final String filename;
