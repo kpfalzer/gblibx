@@ -45,8 +45,23 @@ public class RunCmd implements Runnable {
         return e.getExitValue();
     }
 
-    public RunCmd(String s) {
-        this(s.split("\\s+"));
+    public static String runCommandStdout(String command) {
+        final StringBuilder stdout = new StringBuilder();
+        RunCmd e = new RunCmd(new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                stdout.append((0 < stdout.length()) ? '\n' : '\0').append(s);
+            }
+        }, splitCmd(command));
+        return stdout.toString();
+    }
+
+    public static String[] splitCmd(String cmd) {
+        return cmd.split("\\s+");
+    }
+
+    public RunCmd(String cmd) {
+        this(splitCmd(cmd));
     }
 
     public RunCmd(String... cmd) {
