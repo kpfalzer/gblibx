@@ -53,6 +53,7 @@ public class RunCmd implements Runnable {
                 stdout.append((0 < stdout.length()) ? '\n' : '\0').append(s);
             }
         }, splitCmd(command));
+        e.run();
         return stdout.toString();
     }
 
