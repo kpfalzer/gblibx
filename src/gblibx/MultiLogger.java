@@ -35,9 +35,18 @@ import static gblibx.Util.expectNull;
 
 public class MultiLogger extends Logger {
     public MultiLogger() {
-        __clogger = new ConsoleLogger();
+        this(true);
+    }
+
+    public MultiLogger(boolean useConsole) {
+        __clogger = (useConsole) ? new ConsoleLogger() : null;
         expectNull(__theOne);
         __theOne = this;
+    }
+
+    public MultiLogger(File fname, boolean useConsole) throws IOException {
+        this(useConsole);
+        setFileLogger(fname.getPath());
     }
 
     public MultiLogger(String fname) throws IOException {
