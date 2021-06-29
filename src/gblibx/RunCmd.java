@@ -50,7 +50,7 @@ public class RunCmd implements Runnable {
         RunCmd e = new RunCmd(new Consumer<String>() {
             @Override
             public void accept(String s) {
-                stdout.append((0 < stdout.length()) ? '\n' : '\0').append(s);
+                stdout.append((0 < stdout.length()) ? "\n" : "").append(s);
             }
         }, splitCmd(command));
         e.run();
