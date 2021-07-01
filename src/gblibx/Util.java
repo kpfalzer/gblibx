@@ -705,6 +705,8 @@ public class Util {
     }
 
     public static List<String> toList(String... eles) {
-        return Arrays.asList(eles);
+        List<String> list = new LinkedList<>();
+        for (String e : eles) list.add(e);
+        return list;
     }
 }
