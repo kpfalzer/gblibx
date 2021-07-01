@@ -81,6 +81,7 @@ public class RunCmd implements Runnable {
         __cmd = cmd;
         __cout = cout;
         __cerr = cerr;
+        _builder = new ProcessBuilder(__cmd);
     }
 
     public RunCmd setCout(Consumer<String> cout) {
@@ -108,21 +109,21 @@ public class RunCmd implements Runnable {
     private ExitType __exitType = ExitType.eUnknown;
     private Exception __exception = null;
     private Consumer<String> __cout, __cerr;
+    protected final ProcessBuilder _builder;
+    protected Process _process = null;
 
     @Override
     public void run() {
-        ProcessBuilder pb = new ProcessBuilder(__cmd);
-        Process proc = null;
         try {
-            proc = pb.start();
+            _process = _builder.start();
             List<Thread> threads = Arrays.asList(
-                    new Thread(new StreamGobbler(proc.getInputStream(), __cout)),
-                    new Thread(new StreamGobbler(proc.getErrorStream(), __cerr))
+                    new Thread(new StreamGobbler(_process.getInputStream(), __cout)),
+                    new Thread(new StreamGobbler(_process.getErrorStream(), __cerr))
             );
             threads.forEach(Thread::start);
-            proc.waitFor();
+            _process.waitFor();
             for (Thread thread : threads) thread.join();
-            __exitValue = proc.exitValue();
+            __exitValue = _process.exitValue();
             __exitType = ExitType.eNormal;
         } catch (IOException | InterruptedException e) {
             __setException(e);
@@ -144,16 +145,16 @@ public class RunCmd implements Runnable {
 
     public static class StreamGobbler implements Runnable {
         public StreamGobbler(InputStream from, Consumer<String> to) {
-            __reader = new BufferedReader(new InputStreamReader(from));
-            __writer = to;
+            _reader = new BufferedReader(new InputStreamReader(from));
+            _writer = to;
         }
 
-        private final BufferedReader __reader;
-        private final Consumer<String> __writer;
+        protected final BufferedReader _reader;
+        protected final Consumer<String> _writer;
 
         @Override
         public void run() {
-            __reader.lines().forEach(__writer);
+            _reader.lines().forEach(_writer);
         }
     }
 

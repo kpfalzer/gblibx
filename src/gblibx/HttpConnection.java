@@ -30,26 +30,17 @@ package gblibx;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static gblibx.Util.castobj;
-import static gblibx.Util.downcast;
-import static gblibx.Util.invariant;
-import static gblibx.Util.isEven;
-import static gblibx.Util.isNonNull;
-import static gblibx.Util.toMap;
+import static gblibx.Util.*;
 import static java.lang.Thread.sleep;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -126,6 +117,27 @@ public class HttpConnection {
      */
     public static Map<String, Object> postJSON(String host, int port, String path, Map<String, Object> vals)
             throws Exception {
+        class Sideband {
+            Map<String, Object> rval = null;
+            Exception ex = null;
+        }
+        final Sideband sb = new Sideband();
+        postJSON(host, port, path, vals, (http) -> {
+            try {
+                checkResponse(http);
+                sb.rval = getResponse(http);
+            } catch (IOException e) {
+                sb.ex = new Exception(e);
+            }
+        });
+        if (isNonNull(sb.ex)) throw sb.ex;
+        return sb.rval;
+    }
+
+    public static void
+    postJSON(String host, int port, String path, Map<String, Object> vals,
+             Consumer<HttpURLConnection> responseHandler)
+            throws Exception {
         //https://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
         //https://stackoverflow.com/questions/7181534/http-post-using-json-in-java
         final JSONObject json = new JSONObject(vals);
@@ -153,8 +165,8 @@ public class HttpConnection {
                     os.write(data);
                     os.flush();
                 }
-                checkResponse(http);
-                return getResponse(http);
+                responseHandler.accept(http);
+                return;
             } catch (IOException e) {
                 if (isNonNull(http)) {
                     http.disconnect();
@@ -168,8 +180,8 @@ public class HttpConnection {
                 ;
             }
         }
-        return null;
     }
+
 
     /**
      * POST request.
@@ -183,13 +195,7 @@ public class HttpConnection {
      */
     public static Map<String, Object> postJSON(String host, int port, String path, Object... keyVals) throws Exception {
         invariant(isEven(keyVals.length));
-        Map<String, Object> kvs = new HashMap<>();
-        for (int i = 0; i < keyVals.length; i += 2) {
-            String key = castobj(keyVals[i]);
-            Object val = keyVals[i + 1];
-            kvs.put(key, val);
-        }
-        return postJSON(host, port, path, kvs);
+        return postJSON(host, port, path, toMap(keyVals));
     }
 
     private static void checkResponse(HttpURLConnection http) throws IOException {

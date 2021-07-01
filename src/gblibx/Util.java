@@ -149,6 +149,7 @@ public class Util {
      * @return Map<K, T>
      */
     public static <K, T> Map<K, T> toMap(Object... kvs) {
+        invariant(isEven(kvs.length));
         Map<K, T> map = new HashMap<>();
         for (int i = 0; i < kvs.length; i += 2) {
             final K key = castobj(kvs[i]);
