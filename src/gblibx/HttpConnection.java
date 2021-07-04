@@ -31,10 +31,7 @@ package gblibx;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -138,6 +135,13 @@ public class HttpConnection {
     postJSON(String host, int port, String path, Map<String, Object> vals,
              Consumer<HttpURLConnection> responseHandler)
             throws Exception {
+        postJSON(host, port, path, vals, responseHandler, POST_RETRY_LOOP_SEC, __POST_RETRY_NLOOP);
+    }
+
+    public static void
+    postJSON(String host, int port, String path, Map<String, Object> vals,
+             Consumer<HttpURLConnection> responseHandler, int retrySleepSec, int retryNTimes)
+            throws Exception {
         //https://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
         //https://stackoverflow.com/questions/7181534/http-post-using-json-in-java
         final JSONObject json = new JSONObject(vals);
@@ -150,7 +154,7 @@ public class HttpConnection {
             throw new Exception(e);
         }
         //Well loop here with retry
-        for (int nloop = __POST_RETRY_NLOOP; nloop > 0; --nloop) {
+        for (int nloop = retryNTimes; nloop > 0; --nloop) {
             HttpURLConnection http = null;
             try {
                 http = downcast(url.openConnection());
@@ -171,11 +175,11 @@ public class HttpConnection {
                 if (isNonNull(http)) {
                     http.disconnect();
                 }
-                if (0 == nloop)
+                if (0 >= nloop)
                     throw new Exception(e);
             }
             try {
-                sleep(1000 * POST_RETRY_LOOP_SEC);
+                sleep(1000 * retrySleepSec);
             } catch (InterruptedException e) {
                 ;
             }

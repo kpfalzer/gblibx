@@ -84,6 +84,10 @@ public class RunCmd implements Runnable {
         _builder = new ProcessBuilder(__cmd);
     }
 
+    public RunCmd(List<String> cmd, Consumer<String> cout, Consumer<String> cerr) {
+        this(cmd.toArray(new String[0]), cout, cerr);
+    }
+
     public RunCmd setCout(Consumer<String> cout) {
         expectNull(__cout);
         __cout = cout;

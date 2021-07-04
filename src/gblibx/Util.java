@@ -709,4 +709,65 @@ public class Util {
         for (String e : eles) list.add(e);
         return list;
     }
+
+    /**
+     * Create file and needed directories.
+     * File is created (empty) and closed.
+     *
+     * @param f file to create.
+     * @return same f as paramter.
+     */
+    public static File createFile(File f) throws FileException {
+        if (f.exists() && !f.isFile()) {
+            throw new DirectoryAlreadyExists(f);
+        }
+        if (f.exists()) {
+            if (!f.delete()) {
+                throw new DeleteFileFailed(f);
+            }
+        } else {
+            final File dir = f.getParentFile();
+            if (isNull(dir)) {
+                if (!dir.mkdirs()) {
+                    throw new MkdirFailed(dir);
+                }
+            }
+        }
+        try (FileOutputStream fos = new FileOutputStream(f)) {
+            ;
+        } catch (IOException e) {
+            throw new CreateFileFailed(f, e);
+        }
+        return f;
+    }
+
+    public static class FileException extends Exception {
+        public FileException(String format, Object... args) {
+            super(String.format(format, args));
+        }
+    }
+
+    public static class CreateFileFailed extends FileException {
+        public CreateFileFailed(File f, Exception e) {
+            super("%s: could not create file (%s)", f, e);
+        }
+    }
+
+    public static class MkdirFailed extends FileException {
+        public MkdirFailed(File f) {
+            super("%s: could not create directory", f);
+        }
+    }
+
+    public static class DeleteFileFailed extends FileException {
+        public DeleteFileFailed(File f) {
+            super("%s: cannot delete file", f);
+        }
+    }
+
+    public static class DirectoryAlreadyExists extends FileException {
+        public DirectoryAlreadyExists(File f) {
+            super("Directory named %s already exists", f);
+        }
+    }
 }
