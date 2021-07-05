@@ -727,7 +727,7 @@ public class Util {
             }
         } else {
             final File dir = f.getParentFile();
-            if (isNull(dir)) {
+            if (isNonNull(dir)) {
                 if (!dir.mkdirs()) {
                     throw new MkdirFailed(dir);
                 }
@@ -739,6 +739,10 @@ public class Util {
             throw new CreateFileFailed(f, e);
         }
         return f;
+    }
+
+    public static File createFile(String fname) throws FileException {
+        return createFile(new File(fname));
     }
 
     public static class FileException extends Exception {

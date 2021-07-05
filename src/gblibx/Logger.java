@@ -134,7 +134,7 @@ public abstract class Logger {
         return (0 >= __level.compareTo(svr));
     }
 
-    protected synchronized Logger _print(ELevel svr, String msg, Print... oses) {
+    protected synchronized Logger _print(ELevel svr, String msg, Iterable<Print> oses) {
         __msgCnts.put(svr, 1 + getMessageCount(svr));
         if (doLogMessage(svr)) {
             final String fmsg = getMessage(svr, msg);
@@ -145,6 +145,10 @@ public abstract class Logger {
             }
         }
         return this;
+    }
+
+    protected synchronized Logger _print(ELevel svr, String msg, Print... oses) {
+        return _print(svr, msg, oses);
     }
 
     private Instant __started;
