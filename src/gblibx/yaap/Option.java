@@ -160,6 +160,7 @@ public class Option {
         if (isTrue()) {
             __badOption("option already specified");
         }
+        __addOpt(val);
     }
 
     public void setBinaryOpt() {

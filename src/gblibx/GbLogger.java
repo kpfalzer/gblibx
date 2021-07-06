@@ -104,7 +104,6 @@ public class GbLogger extends Logger {
      */
     private GbLogger initialize(File log, boolean useConsole, boolean useStderr) throws Util.FileException {
         invariant(isNonNull(log) || useConsole, "Specify log or console");
-        if (useStderr) invariant(useConsole);
         if (isNonNull(log)) {
             try {
                 __handlers.add(new FileLogger(createFile(log).getAbsolutePath()));

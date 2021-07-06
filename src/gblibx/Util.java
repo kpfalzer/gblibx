@@ -728,7 +728,7 @@ public class Util {
         } else {
             final File dir = f.getParentFile();
             if (isNonNull(dir)) {
-                if (!dir.mkdirs()) {
+                if (!dir.isDirectory() && !dir.mkdirs()) {
                     throw new MkdirFailed(dir);
                 }
             }
