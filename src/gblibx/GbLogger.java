@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import static gblibx.Util.createFile;
 import static gblibx.Util.downcast;
@@ -14,7 +18,7 @@ import static gblibx.Util.isNonNull;
 /**
  * Another logging facility (better than gblibx.Logger?).
  */
-public class GbLogger extends Logger {
+public class GbLogger extends Logger implements AutoCloseable {
 
     /**
      * Create console logger and use stdout + stderr.
@@ -94,6 +98,66 @@ public class GbLogger extends Logger {
     }
 
     /**
+     * Add handler for named logger ({@link java.util.logging.Logger}).
+     *
+     * @param name name of logger (usu. package name).
+     * @return this object.
+     */
+    public GbLogger addNamedLogger(String name, Function<LogRecord, String> logRecordToString) {
+        java.util.logging.Logger xlogger = java.util.logging.Logger.getLogger(name);
+        xlogger.setLevel(Level.ALL);    //we filter here, so accept all messages.
+        xlogger.addHandler(new Handler() {
+            @Override
+            public void publish(LogRecord record) {
+                GbLogger.this.publish(record, logRecordToString);
+            }
+
+            @Override
+            public void flush() {
+                GbLogger.this.flush();
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                //do nothing
+            }
+        });
+        return this;
+    }
+
+    private void publish(LogRecord record, Function<LogRecord, String> logRecordToString) {
+        final int level = record.getLevel().intValue();
+        switch (getLevel()) {
+            case eDebug:
+                if (level >= Level.FINEST.intValue()) {
+                    debug(logRecordToString.apply(record));
+                }
+                break;
+            case eInfo:
+                if (level >= Level.INFO.intValue()) {
+                    info(logRecordToString.apply(record));
+                }
+                break;
+            case eWarning:
+                if (level >= Level.WARNING.intValue()) {
+                    warning(logRecordToString.apply(record));
+                }
+                break;
+            case eError:
+            case eFatal:
+                if (level >= Level.SEVERE.intValue()) {
+                    error(logRecordToString.apply(record));
+                }
+                break;
+            case eMessage:
+                if (level >= Level.ALL.intValue()) {
+                    message(logRecordToString.apply(record));
+                }
+                break;
+        }
+    }
+
+    /**
      * Initialize this object.
      *
      * @param log        logfile name (created here) or null.
@@ -121,4 +185,15 @@ public class GbLogger extends Logger {
 
     private int __exitCodeOnFatal = 0;
     private final List<Logger.Print> __handlers = new LinkedList<>();
+
+    private void flush() {
+        __handlers.stream().forEach(h -> h.flush());
+    }
+
+    @Override
+    public void close() throws Exception {
+        for (AutoCloseable c : __handlers) {
+            c.close();
+        }
+    }
 }

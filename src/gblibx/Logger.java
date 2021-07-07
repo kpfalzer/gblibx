@@ -54,8 +54,9 @@ public abstract class Logger {
         final char abbrev;
     }
 
-    public static interface Print {
-        public Print print(ELevel svr, String message);
+    public interface Print extends AutoCloseable {
+        Print print(ELevel svr, String message);
+        void flush();
     }
 
     public ELevel getLevel() {

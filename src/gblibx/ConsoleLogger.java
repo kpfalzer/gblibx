@@ -81,6 +81,17 @@ public class ConsoleLogger implements Logger.Print {
         return this;
     }
 
+    @Override
+    public void flush() {
+        __cerr.flush();
+        __cerr.flush();
+    }
+
+    @Override
+    public void close() throws Exception {
+        //do nothing since cerr/out closing handled by system level?!
+    }
+
     /**
      * A toplevel Logger implementation.
      */

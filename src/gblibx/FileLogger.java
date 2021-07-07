@@ -49,15 +49,21 @@ public class FileLogger implements Logger.Print {
 
     /**
      * Unconditionally, print message to file.
-     * @param svr value is ignored.
+     *
+     * @param svr     value is ignored.
      * @param message message to print.
      * @return
      */
     @Override
     public synchronized Logger.Print print(Logger.ELevel svr, String message) {
         __os.println(message);
-        __os.flush();
+        flush();
         return this;
+    }
+
+    @Override
+    public void flush() {
+        __os.flush();
     }
 
     public File getFile() {
@@ -70,4 +76,9 @@ public class FileLogger implements Logger.Print {
 
     private final PrintStream __os;
     private final File __file;
+
+    @Override
+    public void close() throws Exception {
+        __os.close();
+    }
 }
