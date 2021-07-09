@@ -56,6 +56,35 @@ public class Option {
         if (isNonNull(this.dflt)) invariant(takesArg());
     }
 
+    /**
+     * Create option specifier.
+     *
+     * @param shortOpt    short option name.
+     * @param longOpt     long option name.
+     * @param argNmOrNull argument name; or if null: use longOpt.
+     * @param dflt        default value (or null).
+     * @param description option description.
+     * @param repeat      option repeat (one of: !(required) ?(optional) *(zero or more) +(one or more)).
+     * @param convert     convert argument (and/or check).
+     */
+    public Option(char shortOpt, String longOpt, String argNmOrNull, Object dflt, String description, char repeat,
+                  Function<Object, Pair<Object, String>> convert) {
+        this(String.format("-%c|--%s", shortOpt, longOpt),
+                (isNull(argNmOrNull)) ? longOpt : argNmOrNull,
+                dflt, description, repeat, convert);
+    }
+
+    /**
+     * Optional (no argument) option specifier.
+     *
+     * @param shortOpt    short option name.
+     * @param longOpt     long option name.
+     * @param description option description.
+     */
+    public Option(char shortOpt, String longOpt, String description) {
+        this(String.format("-%c|--%s",shortOpt,longOpt), null, null, description, '?', null);
+    }
+
     public Option(String optNm, String argNm, Object dflt,
                   String description, char repeat) {
         this(optNm, argNm, dflt, description, repeat, null);
@@ -100,8 +129,7 @@ public class Option {
         else if (takesArg()) {
             invariant(isNonNull(dflt));
             return new Object[]{dflt};
-        }
-        else if (isBinaryOpt() && !hasOpts())
+        } else if (isBinaryOpt() && !hasOpts())
             return __FALSE;
         return EMPTY;
     }
@@ -261,7 +289,6 @@ public class Option {
      * Detailed usage.
      *
      * @param justify column where description should start.
-     *
      * @return Detailed usage
      */
     public String getDetailedUsage(int justify) {
@@ -276,6 +303,7 @@ public class Option {
 
     /**
      * Force a new option.
+     *
      * @return new Option.
      */
     public static Option forceAddOption(String optNm, Object value) {

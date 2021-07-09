@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
+import java.util.function.Function;
 
 import static gblibx.Util.*;
 import static java.util.Objects.isNull;
@@ -122,8 +123,17 @@ public class Parser {
     }
 
     public Option getValue(String optNm) {
-        invariant(hasKey(optNm));
+        return getValue(optNm, false);
+    }
+
+    public Option getValue(String optNm, boolean nullOK) {
+        if (!nullOK) invariant(hasKey(optNm));
         return __didOpts.get(optNm);
+    }
+
+    public <T> T ifhasOption(String optNm, Function<Option, T> onOption) {
+        Option opt = getValue(optNm, true);
+        return (isNull(opt) || !opt.hasOpts()) ? null : onOption.apply(opt);
     }
 
     public String getString(String optNm) {
@@ -141,6 +151,7 @@ public class Parser {
         for (Group g : __groups) {
             buf.append(' ').append(g.toString());
         }
+        if (isNonNull(__posArgUsage)) buf.append(" ").append(__posArgUsage);
         buf.append("\n");
         return buf.toString();
     }
@@ -150,6 +161,7 @@ public class Parser {
         for (Group g : __groups) {
             buf.append("\n").append(g.getDetailedUsage());
         }
+        if (isNonNull(__posArgUsage)) buf.append("\n").append(__posArgUsage).append("    ").append(__posArgDescip);
         return buf.toString();
     }
 
@@ -202,8 +214,15 @@ public class Parser {
         return __groups.get(__groups.size() - 1);
     }
 
+    public Parser addPosArgUsage(String arg, String descrip) {
+        __posArgUsage = arg;
+        __posArgDescip = descrip;
+        return this;
+    }
+
     public final String progName;
 
     private ArrayList<Group> __groups = new ArrayList<>();
     private ArrayList<String> __posArgs = new ArrayList<>();
+    private String __posArgUsage, __posArgDescip;
 }

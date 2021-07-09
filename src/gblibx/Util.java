@@ -31,12 +31,23 @@ package gblibx;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -45,10 +56,20 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -100,7 +121,6 @@ public class Util {
         return toPath(to).relativize(toPath(other));
     }
 
-
     public static boolean isEven(int n) {
         int rem = n % 2;
         return 0 == rem;
@@ -115,6 +135,10 @@ public class Util {
             return func.apply(obj);
         }
         return null;
+    }
+
+    public static <T> T supplyIfNull(T obj, Supplier<T> supplier) {
+        return (isNull(obj)) ? supplier.get() : obj;
     }
 
     public static <T> void acceptIfNotNull(T obj, Consumer<T> func) {
@@ -384,6 +408,10 @@ public class Util {
             sbuf.append(ele);
         }
         return sbuf.toString();
+    }
+
+    public static String join(Iterable<String> eles) {
+        return join(eles, " ");
     }
 
     public static String join(String[] eles) {
