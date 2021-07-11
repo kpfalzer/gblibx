@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static gblibx.Util.*;
@@ -73,8 +74,22 @@ public class Parser {
         System.exit(1);
     }
 
+    public boolean parse(String[] argv, boolean needAtLeastOneArg, Consumer<Error> handler) {
+        boolean ok = false;
+        try {
+            ok = parse(argv, needAtLeastOneArg);
+        } catch (Error e) {
+            handler.accept(e);
+        }
+        return ok;
+    }
+
     public boolean parse(String[] argv) {
         return parse(argv, true);
+    }
+
+    public boolean parse(String[] argv, Consumer<Error> handler) {
+        return parse(argv, true, handler);
     }
 
     public boolean parse(String[] argv, boolean needAtLeastOneArg) {
