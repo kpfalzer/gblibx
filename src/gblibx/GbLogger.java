@@ -44,6 +44,17 @@ public class GbLogger extends Logger implements AutoCloseable {
      * Create file logger and (optional) console logger.
      *
      * @param log        logfile name (created here) or null.
+     * @param useConsole log to console and stderr (if true).
+     * @throws {@link Util.FileException} if log cannot be created.
+     */
+    public GbLogger(File log, boolean useConsole) throws Util.FileException {
+        this(log,useConsole,useConsole);
+    }
+
+    /**
+     * Create file logger and (optional) console logger.
+     *
+     * @param log        logfile name (created here) or null.
      * @param useConsole log to console (if true).
      * @param useStderr  use stderr (when needed) for console.
      * @throws {@link Util.FileException} if log cannot be created.
