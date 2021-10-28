@@ -33,8 +33,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static gblibx.Util.expectNever;
-import static gblibx.Util.isNonNull;
+import static gblibx.Util.*;
 
 // messages of form: W-17sep19-10:02:35:
 public abstract class Logger {
@@ -149,7 +148,7 @@ public abstract class Logger {
     }
 
     protected synchronized Logger _print(ELevel svr, String msg, Print... oses) {
-        return _print(svr, msg, oses);
+        return _print(svr, msg, toList(oses));
     }
 
     private Instant __started;

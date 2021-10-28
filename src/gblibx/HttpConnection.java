@@ -105,13 +105,26 @@ public class HttpConnection {
     /**
      * POST request.
      *
-     * @param host hostname (can be null if path is complete url).
-     * @param port port.
-     * @param path path.json
+     * @param path url.json
      * @param vals key+val set.
      * @return response.
      * @throws Exception
      */
+    public static Map<String, Object> postJSON(String path, Map<String, Object> vals)
+            throws Exception {
+        return postJSON(null, -1, path, vals);
+    }
+
+        /**
+         * POST request.
+         *
+         * @param host hostname (can be null if path is complete url).
+         * @param port port.
+         * @param path path.json
+         * @param vals key+val set.
+         * @return response.
+         * @throws Exception
+         */
     public static Map<String, Object> postJSON(String host, int port, String path, Map<String, Object> vals)
             throws Exception {
         class Sideband {

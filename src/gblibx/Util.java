@@ -31,23 +31,12 @@ package gblibx;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -56,16 +45,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -73,10 +53,32 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static gblibx.GbDateTime.tznow;
 import static java.nio.file.Files.setPosixFilePermissions;
 import static java.util.Objects.isNull;
 
 public class Util {
+    /**
+     * Fix issue where InputStream read into buffer does NOT correctly read all the data
+     * in one call.  The correction is to loop until full.  EEEK!
+     * NOTE: >= jdk11 fixes this using InputStream.readAllBytes method.
+     * @param ins input stream.
+     * @param n total number of bytes expected.
+     * @return buffer with n bytes filled.
+     * @throws IOException
+     */
+    public static byte[] readAllBytes(InputStream ins, int n) throws IOException {
+        final byte[] buf = new byte[n];
+        int off = 0, len = n;
+        while (0 < len) {
+            int m = ins.read(buf, off, len);
+            invariant(0 < m, "more chars expected");
+            off += m;
+            len -= m;
+        }
+        return buf;
+    }
+
     // Index into ary and allow negative ix (from end).
     public static <T> T index(T[] ary, int ix) {
         return (0 <= ix)
@@ -135,6 +137,10 @@ public class Util {
             return func.apply(obj);
         }
         return null;
+    }
+
+    public static <K,T,R> R applyIfContains(Map<K,T> map, K key, Function<T, R> func, R dflt) {
+        return (map.containsKey(key)) ? func.apply(map.get(key)) : dflt;
     }
 
     public static <T> T supplyIfNull(T obj, Supplier<T> supplier) {
@@ -337,6 +343,10 @@ public class Util {
         return toHHMMSS(duration, false);
     }
 
+    public static String toDDHHMMSS(Duration duration) {
+        return toHHMMSS(duration, true);
+    }
+
     public static String toHHMMSS(Duration durationx, boolean useDays) {
         long dd = -1, hh, mm, ss;
         Duration duration = durationx;
@@ -365,8 +375,9 @@ public class Util {
     }
 
     public static String getLocalDateTime(DateTimeFormatter formatter) {
-        final LocalDateTime now = LocalDateTime.now();
-        return now.format(formatter);
+        //return LocalDateTime.now().format(formatter);
+        //Instead of above, we localize:
+        return tznow().format(formatter);
     }
 
     public static class Pair<T1, T2> {
@@ -615,7 +626,7 @@ public class Util {
     public static void logException(PrintStream os, Exception ex) {
         synchronized (os) {
             final Thread thread = Thread.currentThread();
-            os.printf("%s (%s:%d) {\n", now(), thread.getName(), thread.getId());
+            os.printf("%s (%s:%d) {\n", tznow(), thread.getName(), thread.getId());
             ex.printStackTrace(os);
             os.println("}");
             os.flush();
@@ -629,7 +640,7 @@ public class Util {
     public static void logMessage(PrintStream os, String msg, boolean trace) {
         synchronized (os) {
             final Thread thread = Thread.currentThread();
-            os.printf("%s (%s:%d) {\n", now(), thread.getName(), thread.getId());
+            os.printf("%s (%s:%d) {\n", tznow(), thread.getName(), thread.getId());
             os.printf("Message: %s\n", msg);
             if (trace) {
                 final StackTraceElement[] eles = thread.getStackTrace();
@@ -726,15 +737,15 @@ public class Util {
         return parms;
     }
 
-    public static List<String> toList(Iterable<String> eles) {
-        List<String> list = new LinkedList<>();
-        for (String e : eles) list.add(e);
+    public static <T> List<T> toList(Iterable<T> eles) {
+        List<T> list = new LinkedList<>();
+        for (T e : eles) list.add(e);
         return list;
     }
 
-    public static List<String> toList(String... eles) {
-        List<String> list = new LinkedList<>();
-        for (String e : eles) list.add(e);
+    public static <T> List<T> toList(T... eles) {
+        List<T> list = new LinkedList<>();
+        for (T e : eles) list.add(e);
         return list;
     }
 
