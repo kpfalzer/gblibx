@@ -31,7 +31,13 @@ package gblibx;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -209,6 +215,20 @@ public class Util {
             map.put(k, pojo);
         });
         return map;
+    }
+
+    /**
+     * Format map to JSON string.
+     * @param m map to format.
+     * @return JSON formatted string.
+     */
+    public static String fmtToJSON(Map m) {
+        String s = "{}";
+        if (isNonNull(m)) {
+            final JSONObject json = new JSONObject(m);
+            s = json.toString();
+        }
+        return s;
     }
 
     public static Object toPOJO(Object jsobj) {
