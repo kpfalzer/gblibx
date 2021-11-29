@@ -31,13 +31,7 @@ package gblibx;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -68,8 +62,9 @@ public class Util {
      * Fix issue where InputStream read into buffer does NOT correctly read all the data
      * in one call.  The correction is to loop until full.  EEEK!
      * NOTE: >= jdk11 fixes this using InputStream.readAllBytes method.
+     *
      * @param ins input stream.
-     * @param n total number of bytes expected.
+     * @param n   total number of bytes expected.
      * @return buffer with n bytes filled.
      * @throws IOException
      */
@@ -102,8 +97,51 @@ public class Util {
         return buf.toString();
     }
 
+    /**
+     * Bookkeeping for readFileX
+     */
+    public static class ReadFileData {
+        public String part1 = null, part2 = null;
+        public int truncatedToMB = 0, fileSizeMB = 0;
+    }
+
+    public static ReadFileData readFile(String fname, int max) throws IOException {
+        final ReadFileData rfd = new ReadFileData();
+        final Path path = Paths.get(fname);
+        final long size = Files.size(path);
+        if ((0 >= max) || (max >= size)) {
+            rfd.part1 = new String(Files.readAllBytes(Paths.get(fname)));
+        } else {
+            rfd.fileSizeMB = toMega(size);
+            rfd.truncatedToMB = toMega(max);
+            byte buf[] = null;
+            final InputStream ins = new FileInputStream(fname);
+            final int bufSz = (max / 2);
+            buf = new byte[bufSz];
+            int nFileRead = ins.read(buf, 0, buf.length);
+            invariant(nFileRead == buf.length);
+            rfd.part1 = new String(buf);
+            final long skip = size - max;
+            ins.skip(skip);
+            buf = new byte[bufSz];
+            nFileRead = ins.read(buf, 0, buf.length);
+            invariant(nFileRead == buf.length);
+            ins.close();
+            rfd.part2 = new String(buf);
+        }
+        return rfd;
+    }
+
+    private static final int __MEGA = 1 << 20;
+
+    public static int toMega(long n) {
+        return (int) (n / __MEGA) + ((0 < (n % __MEGA)) ? 1 : 0);
+    }
+
     public static String readFile(String fname) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(fname)));
+        final ReadFileData rfd = readFile(fname, 0);
+        invariant(isNonNull(rfd.part1) && isNull(rfd.part2));
+        return rfd.part1;
     }
 
     public static Path toPath(File file) {
@@ -145,7 +183,7 @@ public class Util {
         return null;
     }
 
-    public static <K,T,R> R applyIfContains(Map<K,T> map, K key, Function<T, R> func, R dflt) {
+    public static <K, T, R> R applyIfContains(Map<K, T> map, K key, Function<T, R> func, R dflt) {
         return (map.containsKey(key)) ? func.apply(map.get(key)) : dflt;
     }
 
@@ -219,6 +257,7 @@ public class Util {
 
     /**
      * Format map to JSON string.
+     *
      * @param m map to format.
      * @return JSON formatted string.
      */
