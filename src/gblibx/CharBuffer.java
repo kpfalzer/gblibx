@@ -140,16 +140,22 @@ public class CharBuffer {
         }
     }
 
+    private static String __NONE = "<none>";
+
+    public String getFilename() {
+        return __NONE;
+    }
+
     public String getLocation() {
-        return getLocation(lineno(), col());
+        return getLocation(lineno(), col()+1);
     }
 
     public String getLocation(int lineno, int col) {
-        return String.format("%d:%d", lineno, col);
+        return String.format("%s:%d:%d", getFilename(), lineno, col);
     }
 
     public String getLocation(Mark mark) {
-        return getLocation(mark.lineno, mark.col);
+        return getLocation(mark.lineno, mark.col+1);
     }
 
     private final char[] __buf;

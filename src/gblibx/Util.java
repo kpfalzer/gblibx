@@ -796,14 +796,14 @@ public class Util {
         return parms;
     }
 
-    public static <T> List<T> toList(Iterable<T> eles) {
-        List<T> list = new LinkedList<>();
+    public static <T> LinkedList<T> toList(Iterable<T> eles) {
+        LinkedList<T> list = new LinkedList<>();
         for (T e : eles) list.add(e);
         return list;
     }
 
-    public static <T> List<T> toList(T... eles) {
-        List<T> list = new LinkedList<>();
+    public static <T> LinkedList<T> toList(T... eles) {
+        LinkedList<T> list = new LinkedList<>();
         for (T e : eles) list.add(e);
         return list;
     }

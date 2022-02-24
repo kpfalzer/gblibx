@@ -63,9 +63,7 @@ public class FileCharBuffer extends CharBuffer {
         return (i == sz) ? buf : Arrays.copyOf(buf, i);
     }
 
-    public String getLocation(int lineno, int col) {
-        return String.format("%s:%d:%d", filename, lineno, col);
-    }
+    public String getFilename() {return filename;}
 
     public final String filename;
 }
