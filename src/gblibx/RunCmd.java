@@ -88,6 +88,10 @@ public class RunCmd implements Runnable {
         this(cmd.toArray(new String[0]), cout, cerr);
     }
 
+    public RunCmd(String cmd, Consumer<String> cout, Consumer<String> cerr) {
+        this(splitCmd(cmd), cout, cerr);
+    }
+
     public RunCmd setCout(Consumer<String> cout) {
         expectNull(__cout);
         __cout = cout;
@@ -138,8 +142,16 @@ public class RunCmd implements Runnable {
         return __exitValue;
     }
 
+    public ExitType getExitType() {
+        return __exitType;
+    }
+
     public boolean isNormalExit() {
-        return __exitType == ExitType.eNormal;
+        return  ExitType.eNormal == getExitType();
+    }
+
+    public Exception getException() {
+        return __exception;
     }
 
     private void __setException(Exception ex) {
