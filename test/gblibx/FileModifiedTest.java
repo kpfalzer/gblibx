@@ -27,13 +27,8 @@
 
 package gblibx;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class FileModifiedTest {
 
-    @Test
     void main() {
         FileModified.main(new String[]{"/Users/kpfalzer/.cshrc"});
     }
