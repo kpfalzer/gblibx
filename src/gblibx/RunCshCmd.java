@@ -56,4 +56,9 @@ public class RunCshCmd {
 
     private static final String CSH_OPTS = System.getProperty("csh.opts", "-fc");
     private static final String CSH = System.getProperty("csh.path", "/bin/csh");
+
+    public static void main(String[] argv) {
+        final String cmd = String.join(" ", argv);
+        run(cmd);
+    }
 }
