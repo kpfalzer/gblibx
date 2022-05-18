@@ -37,7 +37,7 @@
     </properties>
     <groupId>kpfalzer</groupId>
     <artifactId>gblibx</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>HEAD</version>
     <dependencies>
         <dependency>
             <groupId>org.json</groupId>
@@ -70,6 +70,4 @@
             <version>5.8.2</version>
         </dependency>
     </dependencies>
-
-
 </project>
