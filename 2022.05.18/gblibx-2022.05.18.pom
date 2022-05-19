@@ -36,7 +36,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <!--<url>https://github.com/kpfalzer/gblibx</url>-->
-    <groupId>github.com.kpfalzer</groupId>
+    <groupId>kpfalzer</groupId>
     <artifactId>gblibx</artifactId>
     <version>2022.05.18</version>
     <packaging>jar</packaging>
