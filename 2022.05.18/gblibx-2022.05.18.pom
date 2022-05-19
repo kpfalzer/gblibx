@@ -35,9 +35,11 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <!--<url>https://github.com/kpfalzer/gblibx</url>-->
     <groupId>github.com.kpfalzer</groupId>
     <artifactId>gblibx</artifactId>
     <version>2022.05.18</version>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>org.json</groupId>
@@ -58,16 +60,19 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.8.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.8.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.8.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
