@@ -176,7 +176,7 @@ public class Option {
     }
 
     private void __badOption(String msg) {
-        throw new BadOption(msg);
+        throw new Parser.Error(new BadOption(msg));
     }
 
     public boolean isOptional() {
