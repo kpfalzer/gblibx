@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -574,6 +575,29 @@ public class Util {
     public static <T> T[] arrayFill(T[] ar, T val) {
         Arrays.fill(ar, val);
         return ar;
+    }
+
+    public static String getFieldValues(Object instance, Function<Object, String> getValue) {
+        final String fields = Arrays.stream(instance.getClass().getFields()).map(field -> {
+            final String name = field.getName();
+            try {
+                return String.format("%s=%s",
+                        name,
+                        getValue.apply(getFieldValue(instance, name)));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                return null;
+            }
+        }).collect(Collectors.joining(","));
+        return fields;
+    }
+
+    public static String getFieldValues(Object instance) {
+        return getFieldValues(instance, (Object obj) -> obj.toString());
+    }
+
+    public static <T> T getFieldValue(Object instance, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+        final Field field = instance.getClass().getField(fieldName);
+        return castobj(field.get(instance));
     }
 
     public static <T> T[] append(T[] eles, T... more) {
